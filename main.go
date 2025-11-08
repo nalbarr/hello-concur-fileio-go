@@ -8,6 +8,18 @@ import (
 	"strconv"
 )
 
+func FileCloseCheck(f func() error) {
+    if err := f(); err != nil {
+        fmt.Println("Received error for file close.:", err)
+    }
+}
+
+func WriterFlushCheck(f func() error) {
+    if err := f(); err != nil {
+        fmt.Println("Received error for file writer flush..:", err)
+    }
+}
+
 func writer(c <-chan int, filePath string, wg *sync.WaitGroup) {
 	defer wg.Done() 
 
@@ -16,10 +28,16 @@ func writer(c <-chan int, filePath string, wg *sync.WaitGroup) {
 		fmt.Printf("Error creating file: %v\n", err)
 		return
 	}
-	defer file.Close()
+	// NA.
+	// - Remove linter warning
+	// defer file.Close()
+	// defer FileCloseCheck(file.Close())
 
 	writer := bufio.NewWriter(file)
-	defer writer.Flush()
+	// NA.
+	// - Remove linter warning
+	// defer writer.Flush()
+	// defer WriterFlushCheck(writer.Flush())
 
 	for x := range c {
 		xAsString := strconv.Itoa(x)
@@ -29,6 +47,17 @@ func writer(c <-chan int, filePath string, wg *sync.WaitGroup) {
 			return
 		}
 	}
+
+	err2 := writer.Flush()
+	if err2 != nil {
+		fmt.Printf("Errorduring file flush: %v\n", err)
+	}
+
+	err3 := file.Close()
+	if err3 != nil {
+		fmt.Printf("Error during file close: %v\n", err)
+	}
+
 	fmt.Printf("Ints written to %s.\n", filePath)
 }
 
