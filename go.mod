@@ -1,3 +1,3 @@
 module hello-concur-fileio-go
 
-go 1.23.1
+go 1.23.4
