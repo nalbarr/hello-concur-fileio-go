@@ -70,6 +70,7 @@ func main() {
 
 	// 3. Create 2 producers to push (native) ints to channel
 	xs := []int{7, 2, 8, -9, 4, 0}
+	fmt.Printf("input as xs(ints): %v\n", xs)
 	numProducers := 2
 	for i := 0; i < numProducers; i++ {
 		wg.Add(1)
