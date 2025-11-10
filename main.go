@@ -25,7 +25,7 @@ func writer(id int, c <-chan int, wg *sync.WaitGroup) {
 		idAsString := strconv.Itoa(id)
 		xAsString := strconv.Itoa(x)
 		fmt.Printf("Writer %d attempt to write: %s.\n", id, xAsString)
-		_, err := writer.WriteString("goroutine " + idAsString + ", " + xAsString + "\n")
+		_, err := writer.WriteString("Writer " + idAsString + ", " + xAsString + "\n")
 		time.Sleep(time.Second)
 		if err != nil {
 			fmt.Printf("Error writing to file: %v\n", err)
